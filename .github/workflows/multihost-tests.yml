@@ -1,0 +1,36 @@
+name: Integration tests in multi-host mode
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  ghrelease:
+    name: Run Integration Tests on testing farm in multihost mode
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/bluechi/build-base:latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'true'
+
+      - name: Install testing farm CLI
+        run: |
+          python3 -m ensurepip --default-pip
+          python3 -m pip install --upgrade pip
+          python3 -m pip install tft-cli
+
+      - name: Start Integration Tests on testing farm
+        run: |
+          testing-farm version
+          TESTING_FARM_API_TOKEN=${{ secrets.TESTING_FARM_API_TOKEN }} testing-farm request \
+            --path tests \
+            --git-ref main \
+            --git-url https://github.com/eclipse-bluechi/bluechi.git \
+            --compose Fedora-Rawhide \
+            --plan multihost \
+            --pipeline-type tmt-multihost
