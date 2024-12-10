@@ -6,8 +6,6 @@ provision:
       role: controller
     - name: bluechi-agent-1
       role: agent
-    - name: bluechi-agent-2
-      role: agent
 environment:
     BLUECHI_CTRL_SVC_PORT: 8420
     
