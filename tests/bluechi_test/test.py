@@ -19,7 +19,7 @@ from bluechi_test.machine import (
     BluechiControllerMachine,
     BluechiMachine,
 )
-from bluechi_test.util import Timeout
+from bluechi_test.util import Timeout, get_env_value
 from podman import PodmanClient
 
 LOGGER = logging.getLogger(__name__)
@@ -275,7 +275,9 @@ class BluechiContainerTest(BluechiTest):
                 "bluechi-controller.service", "active"
             )
 
-            if ctrl_container.enable_local_agent:
+            if get_env_value("LOCAL_AGENT", "yes") == "yes":
+                LOGGER.debug("starting local agent on ctrl node")
+                ctrl_container.create_local_agent_on_ctrl_machine()
                 ctrl_container.systemctl.start_unit("bluechi-agent")
                 ctrl_container.wait_for_unit_state_to_be(
                     "bluechi-agent.service", "active"
@@ -404,7 +406,9 @@ class BluechiSSHTest(BluechiTest):
             ctrl_machine.wait_for_unit_state_to_be(
                 "bluechi-controller.service", "active"
             )
-            if ctrl_machine.enable_local_agent:
+            if get_env_value("LOCAL_AGENT", "yes") == "yes":
+                LOGGER.debug("starting local agent on ctrl node")
+                ctrl_machine.create_local_agent_on_ctrl_machine()
                 ctrl_machine.systemctl.start_unit("bluechi-agent")
                 ctrl_machine.wait_for_unit_state_to_be(
                     "bluechi-agent.service", "active"

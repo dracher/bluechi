@@ -321,24 +321,24 @@ class BluechiControllerMachine(BluechiAgentMachine):
                  client: Client,
                  ctrl_config: BluechiControllerConfig,
                  agent_config: BluechiAgentConfig = BluechiAgentConfig("agent.conf"),
-                 local_uds_agent: bool = True
                  ) -> None:
         super().__init__(name, client, agent_config)
-        self.enable_local_agent = local_uds_agent
 
         self.bluechictl = BluechiCtl(client)
 
         self.config = ctrl_config
 
+        self.create_file(
+            self.config.get_confd_dir(), self.config.file_name, self.config.serialize()
+        )
+
         self.config_agent = agent_config.deep_copy()
         self.config_agent.controller_address = BluechiControllerMachine.agent_uds_address
         self.config_agent.node_name = BluechiControllerMachine.agent_uds_name
 
-        self.create_file(
-            self.config.get_confd_dir(), self.config.file_name, self.config.serialize()
-        )
+        self.copy_machine_lib()
+
+    def create_local_agent_on_ctrl_machine(self):
         self.create_file(
             self.config_agent.get_confd_dir(), self.config_agent.file_name, self.config_agent.serialize()
         )
-
-        self.copy_machine_lib()
