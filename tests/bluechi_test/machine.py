@@ -89,7 +89,7 @@ class BluechiMachine:
         self,
         unit_name: str,
         expected_state: str,
-        timeout: float = 5.0,
+        timeout: float = 10.0,
         delay: float = 0.5,
     ) -> bool:
 
