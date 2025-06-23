@@ -114,6 +114,8 @@ def test_agent_invalid_port_configuration(
     bluechi_ctrl_default_config.allowed_node_names = [NODE_FOO]
     bluechi_test.set_bluechi_controller_config(bluechi_ctrl_default_config)
 
+    bluechi_test.set_bluechi_local_agent_config(None)
+
     bluechi_test.add_bluechi_agent_config(node_foo_cfg)
 
     bluechi_test.additional_ports = {"8421": "8421"}
