@@ -89,8 +89,8 @@ class BluechiMachine:
         self,
         unit_name: str,
         expected_state: str,
-        timeout: float = 10.0,
-        delay: float = 0.5,
+        timeout: float = 60.0,
+        delay: float = 1.0,
     ) -> bool:
 
         if self.systemctl.is_unit_in_state(unit_name, expected_state):
