@@ -276,6 +276,16 @@ class BluechiMachine:
         coverage_file = f"{BluechiMachine.gcda_file_location}/coverage-{self.name}.info"
 
         LOGGER.info(f"Generating info file '{coverage_file}' started")
+
+        # Check if src directory exists, if not run copy-src-files.sh
+        result, output = self.client.exec_run("test -d /var/tmp/bluechi-coverage/src")
+        if result != 0:
+            LOGGER.info("src directory doesn't exist, running copy-src-files.sh")
+            result, output = self.client.exec_run(
+                "/usr/share/bluechi-coverage/bin/setup-src-dir-for-coverage.sh"
+            )
+            LOGGER.info(f"copy-src-files.sh result: {result}, output: {output}")
+
         result, output = self.client.exec_run(
             f"/usr/share/bluechi-coverage/bin/gather-code-coverage.sh {coverage_file}"
         )

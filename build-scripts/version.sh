@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # Current version of BlueChi
-VERSION=1.1.0
+VERSION=1.2.0
 # Specify if build is a official release or a snapshot build
 IS_RELEASE="0"
 # Used for official releases. Increment if necessary

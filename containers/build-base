@@ -1,8 +1,11 @@
-FROM quay.io/centos/centos:stream9
+ARG centos_stream_version
 
-# CRB is required for meson
+FROM quay.io/centos/centos:$centos_stream_version
+
+# CRB is required for meson and lcovs perl dependencies
 # EPEL is required for lcov, python3-flake8, python3-html2text and codespell
-RUN dnf install -y dnf-plugin-config-manager && \
+RUN dnf upgrade --refresh --nodocs -y && \
+    dnf install -y dnf-plugin-config-manager && \
     dnf config-manager -y --set-enabled crb && \
     dnf install -y epel-release && \
     dnf update --refresh --nodocs -y && \
@@ -23,9 +26,13 @@ RUN dnf install -y dnf-plugin-config-manager && \
         libselinux-devel \
         make \
         meson \
+        pyproject-rpm-macros \
+        python3-devel \
+        python3-dasbus \
         python3-html2text \
         python3-pip \
-        python3-devel \
+        python3-tomli \
+        python3-wheel \
         rpm-build \
         sed \
         selinux-policy-devel \
