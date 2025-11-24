@@ -50,6 +50,8 @@ def test_agent_config_c_option(
     node_foo_cfg = bluechi_node_default_config.deep_copy()
     node_foo_cfg.node_name = NODE_FOO
 
+    bluechi_test.set_bluechi_local_agent_config(None)
+
     bluechi_test.add_bluechi_agent_config(node_foo_cfg)
 
     bluechi_ctrl_default_config.allowed_node_names = [NODE_FOO]
