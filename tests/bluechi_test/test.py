@@ -216,7 +216,7 @@ class BluechiTest:
             LOGGER.error(f"Failed to collect logs: {ex}")
             traceback.print_exc()
 
-        self.teardown(ctrl_container, node_container)
+        # self.teardown(ctrl_container, node_container)
 
         LOGGER.info("Test execution finished")
         if test_result is not None:
